@@ -1,0 +1,146 @@
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-brand bg-warning">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">INVENTARIO ALEJO</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+              aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        </ul>
+        <span class="navbar-text">
+       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                data-bs-whatever="@mdo">agregar nuevo producto</button>
+        </li>
+      </ul>
+      </span>
+      </div>
+    </div>
+  </nav>
+  <br>
+  <div class="row">
+    <div class="col-md-4 mb-3" *ngFor="let item of dataList">
+      <div class="card text-center">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+          <h5 class="card-title">
+            {{item.nameProduct}}
+          </h5>
+          <button type="button" class="btn btn-danger" (click)="deletedId = item.idProducts" data-bs-toggle="modal"
+                  data-bs-target="#deleteModal" data-bs-whatever="@mdo">
+            <i class="far fa-trash-alt"></i>
+          </button>
+        </div>
+        <img class="card-img-top" [src]="item.photoProduct">
+        <div class="card-body">
+          <p>Descripción : {{item.descriptionProduct}}</p>
+          <p>Precio : {{item.priceProduct}}</p>
+          <p>Categoría : {{item.categoryProduct}}</p>
+          <button type="button" class="btn btn-warning" (click)="loadProduct(item.idProducts)" data-bs-toggle="modal"
+                  data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+            EDITAR PRODUCTO
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true"
+       role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">BORRAR PRODUCTO</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <label class="col-form-label">ESTA SEGURO DE QUE DESEA ELIMINAR EL PRODUCTO?</label>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal" (click)="deleteProduct()"
+                  data-bs-dismiss="modal">BORRAR
+          </button>
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal">CANCELAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="productForm" (ngSubmit)="addProduct()">
+            <div class="mb-3">
+              <label for="nameProduct" class="col-form-label">Nombre:</label>
+              <input type="text" class="form-control" formControlName="nameProduct" [(ngModel)]="newProduct.nameProduct"
+                     name="nameProduct" id="nameProduct">
+              <div *ngIf="nameProduct.invalid &&(nameProduct.dirty || nameProduct.touched)">
+                <div class="text-danger">el Nombre es requerido</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="descriptionProduct" class="col-form-label">Descripción:</label>
+              <textarea class="form-control" formControlName="descriptionProduct"
+                        [(ngModel)]="newProduct.descriptionProduct" name="descriptionProduct"
+                        id="descriptionProduct"></textarea>
+              <div *ngIf="descriptionProduct.invalid &&(descriptionProduct.dirty || descriptionProduct.touched)">
+                <div class="text-danger">La Descripción es requerido</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="priceProduct" class="col-form-label">Precio:</label>
+              <input type="number" class="form-control" formControlName="priceProduct"
+                     [(ngModel)]="newProduct.priceProduct" name="priceProduct" id="priceProduct">
+              <div *ngIf="priceProduct.invalid &&(priceProduct.dirty || priceProduct.touched)">
+                <div class="text-danger">El precio es requerido</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="priceProduct" class="col-form-label">Seleccione la Categoría</label>
+              <select class="form-select form-select-sm" class="form-control" formControlName="categoryProduct"
+                      [(ngModel)]="newProduct.categoryProduct" name="categoryProduct"
+                      aria-label=".form-select-sm example">
+                <option value="" selected disabled hidden></option>
+                <option value="Tecnología">Tecnología</option>
+                <option value="Electrodomésticos ">Electrodomésticos</option>
+                <option value="Insumos">Insumos</option>
+              </select>
+              <div *ngIf="categoryProduct.invalid &&(categoryProduct.dirty || categoryProduct.touched)">
+                <div class="text-danger">La Categoría es requerido</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="priceProduct" class="col-form-label">Ingrese la url imagen</label>
+              <input type="url" class="form-control" formControlName="photoProduct" name="image URL"
+                     [(ngModel)]="newProduct.photoProduct">
+              <div *ngIf="photoProduct.invalid &&(photoProduct.dirty || photoProduct.touched)">
+                <div class="text-danger">La foto es requerido</div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button *ngIf="!newProduct.idProducts" type="button" class="btn btn-primary" (click)="addProduct()"
+                  data-bs-dismiss="modal">
+            AGREGAR
+          </button>
+          <button *ngIf="newProduct.idProducts" type="button" class="btn btn-primary" (click)="updateProduct()"
+                  data-bs-dismiss="modal">
+            ACTUALIZAR
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
